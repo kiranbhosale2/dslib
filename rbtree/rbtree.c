@@ -12,7 +12,7 @@ static void left_rotate(rbtree *tree, rbtree_node *x)
 	{
 		x->right->parent = x;
 	}
-	
+
 	if (x->parent == tree->null)
 	{
 		tree->root = y;
@@ -25,10 +25,9 @@ static void left_rotate(rbtree *tree, rbtree_node *x)
 	{
 		x->parent->right = y;
 	}
-	
+
 	x->parent = y;
 	y->left = x;
-	
 }
 
 static void right_rotate(rbtree *tree, rbtree_node *x)
@@ -42,7 +41,7 @@ static void right_rotate(rbtree *tree, rbtree_node *x)
 	{
 		x->left->parent = x;
 	}
-	
+
 	if (x->parent == tree->null)
 	{
 		tree->root = y;
@@ -55,7 +54,7 @@ static void right_rotate(rbtree *tree, rbtree_node *x)
 	{
 		x->parent->right = y;
 	}
-	
+
 	x->parent = y;
 	y->right = x;
 }
@@ -63,7 +62,7 @@ static void right_rotate(rbtree *tree, rbtree_node *x)
 static void insert_fixup(rbtree *tree, rbtree_node *z)
 {
 	rbtree_node *y;
-		
+
 	while (z->parent->color == RBCOLOR_RED)
 	{
 		if (z->parent == z->parent->parent->left)
@@ -71,22 +70,22 @@ static void insert_fixup(rbtree *tree, rbtree_node *z)
 			y = z->parent->parent->right;
 			if (y->color == RBCOLOR_RED)
 			{
-				y->color = RBCOLOR_BLACK;					/* Case 1 */
-				z->parent->color = RBCOLOR_BLACK;			/* Case 1 */
-				z->parent->parent->color = RBCOLOR_RED; 	/* Case 1 */
+				y->color = RBCOLOR_BLACK;								/* Case 1 */
+				z->parent->color = RBCOLOR_BLACK;				/* Case 1 */
+				z->parent->parent->color = RBCOLOR_RED; /* Case 1 */
 				z = z->parent->parent;
-			}	
-			else			 
-			{	
-				if (z == z->parent->right) 					/* Case 2 */
-				{	
-					z = z->parent;							/* Case 2 */
-					left_rotate(tree, z);					/* Case 2 */
+			}
+			else
+			{
+				if (z == z->parent->right) /* Case 2 */
+				{
+					z = z->parent;				/* Case 2 */
+					left_rotate(tree, z); /* Case 2 */
 				}
-				
-				z->parent->color = RBCOLOR_BLACK;			/* Case 3 */
-				z->parent->parent->color = RBCOLOR_RED;		/* Case 3 */
-				right_rotate(tree, z->parent->parent);		/* Case 3 */
+
+				z->parent->color = RBCOLOR_BLACK;				/* Case 3 */
+				z->parent->parent->color = RBCOLOR_RED; /* Case 3 */
+				right_rotate(tree, z->parent->parent);	/* Case 3 */
 			}
 		}
 		else
@@ -94,22 +93,22 @@ static void insert_fixup(rbtree *tree, rbtree_node *z)
 			y = z->parent->parent->left;
 			if (y->color == RBCOLOR_RED)
 			{
-				y->color = RBCOLOR_BLACK;					/* Case 1 */
-				z->parent->color = RBCOLOR_BLACK;			/* Case 1 */
-				z->parent->parent->color = RBCOLOR_RED; 	/* Case 1 */
+				y->color = RBCOLOR_BLACK;								/* Case 1 */
+				z->parent->color = RBCOLOR_BLACK;				/* Case 1 */
+				z->parent->parent->color = RBCOLOR_RED; /* Case 1 */
 				z = z->parent->parent;
-			}	
-			else			 
-			{	
-				if (z == z->parent->left)						/* Case 2 */
-				{	
-					z = z->parent;							/* Case 2 */
-					right_rotate(tree, z);					/* Case 2 */
+			}
+			else
+			{
+				if (z == z->parent->left) /* Case 2 */
+				{
+					z = z->parent;				 /* Case 2 */
+					right_rotate(tree, z); /* Case 2 */
 				}
-				
-				z->parent->color = RBCOLOR_BLACK;			/* Case 3 */
-				z->parent->parent->color = RBCOLOR_RED;	/* Case 3 */
-				left_rotate(tree, z->parent->parent);			/* Case 3 */
+
+				z->parent->color = RBCOLOR_BLACK;				/* Case 3 */
+				z->parent->parent->color = RBCOLOR_RED; /* Case 3 */
+				left_rotate(tree, z->parent->parent);		/* Case 3 */
 			}
 		}
 	}
@@ -136,7 +135,7 @@ static void rbtree_transplant(rbtree *tree, rbtree_node *x, rbtree_node *y)
 static void delete_fixup(rbtree *tree, rbtree_node *x)
 {
 	rbtree_node *w;
-		
+
 	while ((x != tree->root) && (x->color == RBCOLOR_BLACK))
 	{
 		if (x == x->parent->left)
@@ -162,9 +161,9 @@ static void delete_fixup(rbtree *tree, rbtree_node *x)
 rbtree_node *rbtree_minimum(rbtree *tree, rbtree_node *node)
 {
 	rbtree_node *min_node;
-	
-	min_node = node ->left;
-	
+
+	min_node = node->left;
+
 	while (min_node != tree->null)
 	{
 		min_node = min_node->left;
@@ -173,7 +172,7 @@ rbtree_node *rbtree_minimum(rbtree *tree, rbtree_node *node)
 	return min_node;
 }
 
-rbtree_node * rbtree_search(rbtree *tree, const void *key)
+rbtree_node *rbtree_search(rbtree *tree, const void *key)
 {
 	int ret_val;
 	rbtree_node *node;
@@ -186,7 +185,7 @@ rbtree_node * rbtree_search(rbtree *tree, const void *key)
 		{
 			return node; /* Found the node with a key */
 		}
-		
+
 		node = ret_val < 0 ? node->left : node->right;
 	}
 
@@ -203,29 +202,29 @@ void rbtree_delete(rbtree *tree, rbtree_node *z)
 
 	if (z->left == tree->null)
 	{
-		x =  z->right;
+		x = z->right;
 		rbtree_transplant(tree, z, z->right);
 	}
 	else if (z->right == tree->null)
 	{
-		x =  z->right;
+		x = z->right;
 		rbtree_transplant(tree, z, z->left);
 	}
-	else 
+	else
 	{
 		y = rbtree_minimum(tree, z->right);
 		y_original_color = y->color;
 
 		x = y->right;
-		 if (y->parent == z)
-		 {
-		 	x->parent = y;
-		 }
-		 else
-		 {
-		 	y->right = z->right;
+		if (y->parent == z)
+		{
+			x->parent = y;
+		}
+		else
+		{
+			y->right = z->right;
 			y->right->parent = y;
-		 }
+		}
 	}
 
 	if (y_original_color == RBCOLOR_BLACK)
@@ -242,7 +241,7 @@ int rbtree_insert(rbtree *tree, rbtree_node *node)
 	y = tree->null;
 	x = tree->root;
 
-	while(x != tree->null)
+	while (x != tree->null)
 	{
 		y = x;
 		ret_val = tree->comp(x->key, node->key);
@@ -259,7 +258,7 @@ int rbtree_insert(rbtree *tree, rbtree_node *node)
 		tree->root = node;
 	}
 
-	else 
+	else
 	{
 		ret_val = tree->comp(y->key, node->key);
 		if (ret_val <= 0)
@@ -292,5 +291,3 @@ void rbtree_init(rbtree *tree, rbtree_comp_func *comp)
 	tree->root = tree->null;
 	tree->comp = comp;
 }
- 
-
