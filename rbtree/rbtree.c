@@ -70,20 +70,20 @@ static void insert_fixup(rbtree *tree, rbtree_node *z)
 			y = z->parent->parent->right;
 			if (y->color == RBCOLOR_RED)
 			{
-				y->color = RBCOLOR_BLACK;								/* Case 1 */
-				z->parent->color = RBCOLOR_BLACK;				/* Case 1 */
+				y->color = RBCOLOR_BLACK;				/* Case 1 */
+				z->parent->color = RBCOLOR_BLACK;		/* Case 1 */
 				z->parent->parent->color = RBCOLOR_RED; /* Case 1 */
 				z = z->parent->parent;
 			}
 			else
 			{
-				if (z == z->parent->right) /* Case 2 */
+				if (z == z->parent->right) 				/* Case 2 */
 				{
-					z = z->parent;				/* Case 2 */
-					left_rotate(tree, z); /* Case 2 */
+					z = z->parent;						/* Case 2 */
+					left_rotate(tree, z); 				/* Case 2 */
 				}
 
-				z->parent->color = RBCOLOR_BLACK;				/* Case 3 */
+				z->parent->color = RBCOLOR_BLACK;		/* Case 3 */
 				z->parent->parent->color = RBCOLOR_RED; /* Case 3 */
 				right_rotate(tree, z->parent->parent);	/* Case 3 */
 			}
@@ -93,22 +93,22 @@ static void insert_fixup(rbtree *tree, rbtree_node *z)
 			y = z->parent->parent->left;
 			if (y->color == RBCOLOR_RED)
 			{
-				y->color = RBCOLOR_BLACK;								/* Case 1 */
-				z->parent->color = RBCOLOR_BLACK;				/* Case 1 */
+				y->color = RBCOLOR_BLACK;				/* Case 1 */
+				z->parent->color = RBCOLOR_BLACK;		/* Case 1 */
 				z->parent->parent->color = RBCOLOR_RED; /* Case 1 */
 				z = z->parent->parent;
 			}
 			else
 			{
-				if (z == z->parent->left) /* Case 2 */
+				if (z == z->parent->left) 				/* Case 2 */
 				{
-					z = z->parent;				 /* Case 2 */
-					right_rotate(tree, z); /* Case 2 */
+					z = z->parent;				 		/* Case 2 */
+					right_rotate(tree, z); 				/* Case 2 */
 				}
 
-				z->parent->color = RBCOLOR_BLACK;				/* Case 3 */
+				z->parent->color = RBCOLOR_BLACK;		/* Case 3 */
 				z->parent->parent->color = RBCOLOR_RED; /* Case 3 */
-				left_rotate(tree, z->parent->parent);		/* Case 3 */
+				left_rotate(tree, z->parent->parent);	/* Case 3 */
 			}
 		}
 	}
