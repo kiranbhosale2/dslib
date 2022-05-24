@@ -87,7 +87,7 @@ bstree_node * bstree_search(bstree *tree, const void *key)
 	node = tree->root;
 	while (node != tree->null)
 	{
-		ret_val = tree->comp(node->key, key);
+		ret_val = tree->comp((void *)node->key, key);
 		if (ret_val == 0)
 		{
 			return node; /* Found the node with a key */
