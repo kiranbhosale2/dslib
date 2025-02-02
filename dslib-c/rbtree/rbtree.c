@@ -144,17 +144,71 @@ static void delete_fixup(rbtree *tree, rbtree_node *x)
 
 			if (w->color == RBCOLOR_RED)
 			{
-				x->parent->color = RBCOLOR_RED;
-				w->color = RBCOLOR_BLACK;
-				left_rotate(tree, x->parent);
-				w = x->parent->right;
+				w->color = RBCOLOR_BLACK;             /* Case 1 */
+				x->parent->color = RBCOLOR_RED;       /* Case 1 */
+				left_rotate(tree, x->parent);         /* Case 1 */
+				w = x->parent->right;                 /* Case 1 */
+			}
+
+			if ((w->left->color == RBCOLOR_BLACK) && (w->right->color == RBCOLOR_BLACK))
+			{
+				w->color = RBCOLOR_RED;               /* Case 2 */
+				x = x->parent;                        /* Case 2 */
+			}
+			else
+			{
+				if (w->right->color == RBCOLOR_BLACK)
+				{
+					w->left->color = RBCOLOR_BLACK;   /* Case 3 */
+					w->color = RBCOLOR_RED;           /* Case 3 */
+					right_rotate(tree, w);            /* Case 3 */
+					w = x->parent->right;             /* Case 3 */
+				}
+
+				w->color = x->parent->color;         /* Case 4 */
+				x->parent->color = RBCOLOR_BLACK;    /* Case 4 */
+				w->right->color = RBCOLOR_BLACK;     /* Case 4 */
+				left_rotate(tree, x->parent);         /* Case 4 */
+				x = tree->root;                       /* Case 4 */
 			}
 		}
 		else
 		{
 			w = x->parent->left;
+
+			if (w->color == RBCOLOR_RED)
+			{
+				w->color = RBCOLOR_BLACK;             /* Case 1 */
+				x->parent->color = RBCOLOR_RED;       /* Case 1 */
+				right_rotate(tree, x->parent);        /* Case 1 */
+				w = x->parent->left;                  /* Case 1 */
+			}
+
+			if ((w->right->color == RBCOLOR_BLACK) && (w->left->color == RBCOLOR_BLACK))
+			{
+				w->color = RBCOLOR_RED;               /* Case 2 */
+				x = x->parent;                        /* Case 2 */
+			}
+			else
+			{
+				if (w->left->color == RBCOLOR_BLACK)
+				{
+					w->right->color = RBCOLOR_BLACK;  /* Case 3 */
+					w->color = RBCOLOR_RED;           /* Case 3 */
+					left_rotate(tree, w);             /* Case 3 */
+					w = x->parent->left;              /* Case 3 */
+				}
+
+				w->color = x->parent->color;         /* Case 4 */
+				x->parent->color = RBCOLOR_BLACK;    /* Case 4 */
+				w->left->color = RBCOLOR_BLACK;      /* Case 4 */
+				right_rotate(tree, x->parent);        /* Case 4 */
+				x = tree->root;                       /* Case 4 */
+			}
 		}
 	}
+
+	x->color = RBCOLOR_BLACK;
 }
 
 /* Red black trees Utility Functions */

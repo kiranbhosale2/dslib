@@ -9,8 +9,9 @@ typedef enum {
 	QUEUE = 1U,
 	LINKED_LIST,
 	BINARY_SEARCH_TREE,
-	RED_BLACK_TREE
-}test_lib_t;
+	RED_BLACK_TREE,
+	EXIT
+}test_case_num_t;
 
 static rbtree test_rbtree;
 
@@ -52,7 +53,7 @@ static void test_rbtree_insert(rbtree *tree)
 	}
 }
 
-static void tes_rbtree_find(rbtree *tree)
+static void test_rbtree_find(rbtree *tree)
 {
 	int key;
 	rbtree_node *node;
@@ -81,7 +82,7 @@ static void rbtree_test()
 		test_rbtree_insert(&test_rbtree);
 	}
 
-	tes_rbtree_find(&test_rbtree);
+	test_rbtree_find(&test_rbtree);
 }
 
 
@@ -114,32 +115,55 @@ static void queue_test()
 
 int main(void)
 {
-	const char *menu = "\n 1.QUEUE \n 2.Linked List \n3.Binary search Tree \n4.Red black tree \n5.Exit\n";
+    const char *menu = "\n 1.QUEUE \n 2.Linked List \n3.Binary search Tree \n4.Red black tree \n5.Exit\n";
+    char input[10];
 
-	while (1)
-	{
-		printf(" Enter Test from \n = %s", menu);
-		test_lib_t test_case = (test_lib_t)(getchar() - '0');
-		switch (test_case)
-		{
-		case QUEUE:
-			queue_test();
-			break;
+    while (1)
+    {
+        printf(" Enter Test from %s", menu);
 
-		case LINKED_LIST:
-			break;
+        if (fgets(input, sizeof(input), stdin) == NULL)
+        {
+            // Handle error if fgets fails
+            fprintf(stderr, "Error reading input.\n");
+            return 1;
+        }
 
-		case BINARY_SEARCH_TREE:
-			
-			break;
+        int test_case;
+        if (sscanf(input, "%d", &test_case) == 1)
+        {
+            switch (test_case)
+            {
+            case 1:
+                printf("You selected QUEUE\n");
+                queue_test();
+                break;
 
-		case RED_BLACK_TREE:
-			rbtree_test();
-			break;
+            case 2:
+                printf("You selected Linked List\n");    
+                break;
 
-		default:	
-			break;
-		}
-	}
+            case 3:
+                printf("You selected Binary Search Tree\n");                
+                break;
+
+            case 4:
+                printf("You selected Red-Black Tree\n");
+                rbtree_test();
+                break;
+
+            case 5:
+                printf("Exiting program.\n");
+                return 0;
+
+            default:
+                printf("Invalid test case. Please enter a valid test case number.\n");
+                break;
+            }
+        }
+        else
+        {
+            printf("Invalid input. Please enter a valid integer.\n");
+        }
+    }
 }
-
